@@ -53,4 +53,4 @@ class DeviceResponsibility(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name 
+        return f"{self.device.name} - {self.responsible_person.username}"
