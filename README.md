@@ -13,17 +13,24 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. migrate
+### 3. setup .env file
+```bash
+cp .env.example .env
+
+# generate a secret key and add it to .env
+```
+
+### 4. migrate
 ```bash
 python3 manage.py migrate
 ```
 
-### 4. create admin
+### 5. create admin
 ```bash
 python3 manage.py createsuperuser
 ```
 
-### 5. run server
+### 6. run server
 ```bash
 python3 manage.py runserver
 ```
