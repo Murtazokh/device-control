@@ -5,6 +5,9 @@ class DeviceType(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Device(models.Model):
     STATUS_CHOICES = [
@@ -34,6 +37,9 @@ class Device(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 
 class DeviceResponsibility(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
@@ -45,3 +51,6 @@ class DeviceResponsibility(models.Model):
     )
     assigned_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name 

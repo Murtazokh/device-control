@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Qurilmalar Ro'yxati{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h2>Qurilmalar Ro'yxati</h2>
+            <p class="text-muted">Jami: {{ total_devices }} ta qurilma</p>
+        </div>
+        <div class="col-md-6 text-end">
+            {% if user_role == 'ADMIN' %}
+                <a href="{% url 'admin:devices_device_add' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Yangi Qurilma
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-2">
+                    {{ filter_form.device_type }}
+                </div>
+                <div class="col-md-2">
+                    {{ filter_form.status }}
+                </div>
+                <div class="col-md-2">
+                    {{ filter_form.branch }}
+                </div>
+                <div class="col-md-2">
+                    {{ filter_form.department }}
+                </div>
+                <div class="col-md-3">
+                    {{ filter_form.search }}
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Devices Table -->
+    <div class="card">
+        <div class="card-body">
+            {% if devices %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nomi</th>
+                                <th>Turi</th>
+                                <th>Serial raqam</th>
+                                <th>Filial</th>
+                                <th>Bo'lim</th>
+                                <th>Holati</th>
+                                <th>Javobgar shaxs</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for device in devices %}
+                            <tr>
+                                <td>
+                                    <strong>{{ device.name }}</strong><br>
+                                    <small class="text-muted">{{ device.model }}</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ device.device_type.name }}</span>
+                                </td>
+                                <td>{{ device.serial_number }}</td>
+                                <td>{{ device.branch }}</td>
+                                <td>{{ device.department }}</td>
+                                <td>
+                                    {% if device.status == 'WORKING' %}
+                                        <span class="badge bg-success">Ishlayapti</span>
+                                    {% elif device.status == 'BROKEN' %}
+                                        <span class="badge bg-danger">Nosoz</span>
+                                    {% elif device.status == 'IN_SERVICE' %}
+                                        <span class="badge bg-warning">Servisda</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Chiqarilgan</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% with device.deviceresponsibility_set.filter|first as resp %}
+                                        {% if resp %}
+                                            {{ resp.responsible_person.get_full_name|default:resp.responsible_person.username }}
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'device_detail' device.pk %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i> Ko'rish
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center" role="alert">
+                    <i class="bi bi-info-circle"></i> Qurilmalar topilmadi
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

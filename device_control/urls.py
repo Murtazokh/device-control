@@ -5,5 +5,6 @@ from accounts.views import dashboard_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
+    path('devices/', include('devices.urls')),
     path('', dashboard_view, name='dashboard'),
 ]

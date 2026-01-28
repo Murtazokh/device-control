@@ -35,7 +35,6 @@ def logout_view(request):
 def dashboard_view(request):
     user = request.user
     
-    # Redirect based on role
     if user.role == 'ADMIN':
         return redirect('admin_dashboard')
     elif user.role == 'RESPONSIBLE':
@@ -43,7 +42,7 @@ def dashboard_view(request):
     elif user.role == 'TECHNICIAN':
         return redirect('technician_dashboard')
     else:
-        return render(request, 'dashboard/base_dashboard.html')
+        return render(request, 'base.html')
 
 @login_required
 def profile_view(request):
